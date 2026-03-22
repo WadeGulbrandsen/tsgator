@@ -1,0 +1,26 @@
+{
+  "name": "tsgator",
+  "version": "1.0.0",
+  "description": "Repo for boot.dev [Build a Blog Aggregator in TypeScript](https://www.boot.dev/courses/build-blog-aggregator-typescript) course",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsx ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WadeGulbrandsen/tsgator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WadeGulbrandsen/tsgator/issues"
+  },
+  "homepage": "https://github.com/WadeGulbrandsen/tsgator#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
