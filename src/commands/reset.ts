@@ -1,4 +1,4 @@
-import { deleteUsers } from "src/lib/db/queries/users";
+import { deleteUsers } from "../lib/db/queries/users";
 
 export async function handlerReset(cmdName: string, ...args: string[]) {
   try {
