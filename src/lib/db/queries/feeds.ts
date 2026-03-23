@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "..";
-import { feeds } from "../schema";
+import { feeds, users } from "../schema";
 
 export async function createFeed(name: string, url: string, userId: string) {
   const [result] = await db.insert(feeds).values({ name, url, userId }).returning();
@@ -13,4 +13,18 @@ export async function getFeedByURL(url: string) {
     throw new Error(`Could not find a feed with url=${url}`);
   }
   return result;
+}
+
+export async function getFeeds() {
+  return await db
+    .select({
+      id: feeds.id,
+      createdAt: feeds.createdAt,
+      updatedAt: feeds.updatedAt,
+      feedName: feeds.name,
+      url: feeds.url,
+      userName: users.name,
+    })
+    .from(feeds)
+    .innerJoin(users, eq(feeds.userId, users.id));
 }
