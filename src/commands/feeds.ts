@@ -1,16 +1,14 @@
 import { getUserByName } from "../lib/db/queries/users";
 import { readConfig } from "../config";
-import { createFeed, getFeedByURL } from "../lib/db/queries/feeds";
+import { createFeed } from "../lib/db/queries/feeds";
 import { Feed, User } from "../lib/db/schema";
 import { createFeedFollow } from "src/lib/db/queries/follows";
 
-export async function handlerAddFeed(cmdName: string, ...args: string[]) {
+export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]) {
   const [name, url] = args;
   if (!name || !url) {
     throw new Error(`Usage: ${cmdName} <name> <url>`);
   }
-  const username = readConfig().currentUserName;
-  const user: User = await getUserByName(username);
   const feed: Feed = await createFeed(name, url, user.id);
 
   console.log("Feed created successfully:");
