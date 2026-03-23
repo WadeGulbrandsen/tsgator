@@ -4,7 +4,7 @@ import { createUser, getUserByName, getUsers } from "../lib/db/queries/users";
 export async function handlerLogin(cmdName: string, ...args: string[]) {
   const [username] = args;
   if (!username) {
-    throw new Error("login requires a username");
+    throw new Error(`Usage: ${cmdName} <username>`);
   }
   const user = await getUserByName(username);
   setUser(user.name);
@@ -14,7 +14,7 @@ export async function handlerLogin(cmdName: string, ...args: string[]) {
 export async function handlerRegister(cmdName: string, ...args: string[]) {
   const [username] = args;
   if (!username) {
-    throw new Error("register requires a username");
+    throw new Error(`Usage: ${cmdName} <username>`);
   }
   try {
     const result = await createUser(username);

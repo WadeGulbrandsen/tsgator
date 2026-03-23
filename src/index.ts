@@ -3,6 +3,7 @@ import { CommandsRegistry, registerCommand, runCommand } from "./commands/comman
 import { handlerLogin, handlerRegister, handlerUsers } from "./commands/users";
 import { handlerReset } from "./commands/reset";
 import { handlerAgg } from "./commands/agg";
+import { handlerAddFeed } from "./commands/feeds";
 
 async function main() {
   const registry: CommandsRegistry = {};
@@ -11,6 +12,7 @@ async function main() {
   await registerCommand(registry, "reset", handlerReset);
   await registerCommand(registry, "users", handlerUsers);
   await registerCommand(registry, "agg", handlerAgg);
+  await registerCommand(registry, "addfeed", handlerAddFeed);
   const [_nodePath, _scriptPath, cmdName, ...args] = argv;
   try {
     await runCommand(registry, cmdName, ...args);
