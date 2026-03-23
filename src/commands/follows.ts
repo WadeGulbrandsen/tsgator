@@ -1,6 +1,6 @@
 import { getFeedByURL } from "../lib/db/queries/feeds";
 import { Feed, User } from "../lib/db/schema";
-import { createFeedFollow, getFeedFollowsForUser } from "../lib/db/queries/follows";
+import { createFeedFollow, deleteFeedFollow, getFeedFollowsForUser } from "../lib/db/queries/follows";
 
 export async function handlerFollow(cmdName: string, user: User, ...args: string[]) {
   const [url] = args;
@@ -10,6 +10,14 @@ export async function handlerFollow(cmdName: string, user: User, ...args: string
   const feed: Feed = await getFeedByURL(url);
   const follow = await createFeedFollow(user.id, feed.id);
   console.log(`${follow.userName} is now following ${follow.feedName}`);
+}
+
+export async function handlerUnfollow(cmdName: string, user: User, ...args: string[]) {
+  const [url] = args;
+  if (!url) {
+    throw new Error(`Usage: ${cmdName} <url>`);
+  }
+  await deleteFeedFollow(user.id, url);
 }
 
 export async function handlerFollowing(cmdName: string, user: User, ...args: string[]) {
