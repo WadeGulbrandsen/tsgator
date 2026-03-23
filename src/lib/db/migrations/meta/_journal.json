@@ -15,6 +15,13 @@
       "when": 1774283580452,
       "tag": "0001_faithful_dakota_north",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774290807725,
+      "tag": "0002_brainy_hex",
+      "breakpoints": true
     }
   ]
 }
