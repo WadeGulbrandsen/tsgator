@@ -28,8 +28,18 @@ export async function fetchFeed(feedURL: string) {
   }
 
   const xml = await res.text();
-  const parser = new XMLParser();
-  const result = parser.parse(xml);
+  const parser = new XMLParser({
+    processEntities: {
+      maxTotalExpansions: 5000
+    }
+  });
+  let result;
+  try {
+    result = parser.parse(xml);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
   const channel = result.rss?.channel;
 
   if (

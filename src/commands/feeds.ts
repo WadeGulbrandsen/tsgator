@@ -1,6 +1,6 @@
 import { createFeed, getFeeds } from "../lib/db/queries/feeds";
 import { Feed, User } from "../lib/db/schema";
-import { createFeedFollow } from "src/lib/db/queries/follows";
+import { createFeedFollow } from "../lib/db/queries/follows";
 
 export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]) {
   const [name, url] = args;

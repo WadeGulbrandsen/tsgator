@@ -1,5 +1,8 @@
-import { getNextFeedToFetch, markFeedFetched } from "src/lib/db/queries/feeds";
+import { getNextFeedToFetch, markFeedFetched } from "../lib/db/queries/feeds";
 import { fetchFeed } from "../lib/rss";
+import { createPost } from "../lib/db/queries/posts";
+import postgres from "postgres";
+
 
 export async function handlerAgg(cmdName: string, ...args: string[]) {
   const [timeBetweenReqs] = args;
@@ -30,8 +33,31 @@ async function scrapeFeeds() {
   const rss = await fetchFeed(feed.url);
   console.log(`Posts: (${rss.channel.item.length})`);
   for (const post of rss.channel.item) {
-    console.log(` * ${post.title}`);
+    try {
+      const publishedAt = await parseDate(post.pubDate);
+      await createPost(post.title, post.link, post.description, publishedAt, feed.id);
+    } catch (err) {
+      if (
+        err instanceof Error
+        && err.cause instanceof postgres.PostgresError
+        && err.cause.code === "23505" // Code 23505 is unique_violation
+        && err.cause.constraint_name === "posts_url_unique"
+      ) {
+        // Ignore unique_violation errors
+        // console.error(err.cause.detail);
+        continue;
+      }
+      console.error(`Error saving post: ${err instanceof Error ? err.message : err}`);
+    }
   }
+}
+
+async function parseDate(dateStr: string) {
+  const timestamp = Date.parse(dateStr);
+  if (!timestamp) {
+    throw new Error(`Unable to parse date: ${dateStr}`);
+  }
+  return new Date(timestamp);
 }
 
 function handleError(reason: any) {
